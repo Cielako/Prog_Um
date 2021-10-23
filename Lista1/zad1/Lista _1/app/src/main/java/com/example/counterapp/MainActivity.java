@@ -51,5 +51,9 @@ public class MainActivity extends AppCompatActivity {
             showCount.setText(Integer.toString(count));
     }
 
-
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("counter_state", count);
+    }
 }
