@@ -97,9 +97,8 @@ public class MainActivity extends AppCompatActivity {
     public void equalClick(View view) {
         String newNumber = showText.getText().toString();
         double result = 0.0;
-        System.out.println((showText.getText().toString()));
-
         Snackbar myInfo = Snackbar.make(findViewById(R.id.textView), "nie dzielimy przez 0 :)", Snackbar.LENGTH_SHORT);
+
         switch (defaultOp){
             case "+":
                 result = Double.parseDouble(oldNumber) + Double.parseDouble(newNumber);
@@ -127,5 +126,15 @@ public class MainActivity extends AppCompatActivity {
         newOp = true;
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("my_value", showText.getText().toString());
+    }
 
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        showText.setText(savedInstanceState.getString("my_value"));
+    }
 }
