@@ -1,0 +1,37 @@
+public void nextQuestion(View view) {
+        counter++;
+        butTrue.setEnabled(true);
+        butFalse.setEnabled(true);
+        if (counter == questions.length) {
+            counter = 0;
+        }
+        textView.setText(questions[counter].getTextId());
+    }
+
+
+    public void submitAnswer(View view) {
+        switch (view.getId()){
+            case R.id.butTrue:
+                if(questions[counter].isAnswer() == btnTrueBool) {
+                    points++;
+                    butTrue.setEnabled(false);
+                    butFalse.setEnabled(false);
+                    textView.setText(Integer.toString(points));}
+                else {
+                    butTrue.setEnabled(false);
+                    butFalse.setEnabled(false);
+                };
+                break;
+
+            case R.id.butFalse:
+                if(questions[counter].isAnswer() == btnFalseBool) {
+                    points++;
+                    butTrue.setEnabled(false);
+                    butFalse.setEnabled(false);
+                    textView.setText(Integer.toString(points));}
+                else {
+                    butTrue.setEnabled(false);
+                    butFalse.setEnabled(false);
+                };
+                break;
+        }
