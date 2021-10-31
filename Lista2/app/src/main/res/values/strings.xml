@@ -11,4 +11,8 @@
     <string name="question1">Działa1 ?</string>
     <string name="question2">Działa2 ?</string>
     <string name="question3">Działa3 ?</string>
+
+    <string name="show_cheat_text">Want to see correct answer ?</string>
+    <string name="cheat">CHEAT</string>
+    <string name="show">SHOW ANSWER</string>
 </resources>

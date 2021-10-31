@@ -1,26 +1,33 @@
 package com.example.quizapp;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
+    public static final String ANS = "com.example.quiz.ANS";
+
     private TextView textView,summaryView;
     private int counter = 0;
     private int points = 0;
     private int ansQuestCounter = 0;
-    Button butTrue, butFalse, butRestart;
+    Button butTrue, butFalse, butRestart, butCheat,butShowAnswer;
     Boolean btnTrueBool, btnFalseBool;
     ArrayList<Integer> answeredQuestions = new ArrayList<>(questions.length);
+    Snackbar infoCorrect, infoIncorrect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +36,15 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.question_text);
         textView.setText(questions[0].getTextId());
 
-        butTrue=(Button)findViewById(R.id.butTrue);
-        butFalse=(Button)findViewById(R.id.butFalse);
-        butRestart=(Button)findViewById(R.id.butRestart);
+        butTrue = (Button)findViewById(R.id.butTrue);
+        butFalse = (Button)findViewById(R.id.butFalse);
+        butRestart = (Button)findViewById(R.id.butRestart);
         butRestart.setVisibility(View.GONE);
+        butCheat = (Button)findViewById(R.id.butCheat);
+        butShowAnswer = (Button)findViewById(R.id.butShowAnswer);
+        butShowAnswer.setVisibility(View.GONE);
+
+
 
         btnTrueBool=Boolean.parseBoolean(butTrue.getText().toString());
         btnFalseBool=Boolean.parseBoolean(butFalse.getText().toString());
@@ -66,10 +78,14 @@ public class MainActivity extends AppCompatActivity {
         if(answeredQuestions.contains(counter)){
             butTrue.setEnabled(false);
             butFalse.setEnabled(false);
-        }
+            butCheat.setVisibility(View.GONE);
+            butShowAnswer.setVisibility(View.VISIBLE); }
         else{
             butTrue.setEnabled(true);
-            butFalse.setEnabled(true);}
+            butFalse.setEnabled(true);
+            butCheat.setVisibility(View.VISIBLE);
+            butShowAnswer.setVisibility(View.GONE); }
+
     }
 
     public void previousQuestion(View view) {
@@ -80,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         textView.setText(questions[counter].getTextId());
 
         checkIfAnswered();
+
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -88,16 +105,21 @@ public class MainActivity extends AppCompatActivity {
             //do nothing
         }
         else answeredQuestions.add(counter);
+        infoCorrect = Snackbar.make(textView, "Correct :)", Snackbar.LENGTH_SHORT);
+        infoIncorrect = Snackbar.make(textView, "Incorrect :(", Snackbar.LENGTH_SHORT);
         switch (view.getId()){
 
             case R.id.butTrue:
                 ansQuestCounter++;
                 butTrue.setEnabled(false);
                 butFalse.setEnabled(false);
+                butCheat.setVisibility(View.GONE);
+                butShowAnswer.setVisibility(View.VISIBLE);
                 if(questions[counter].isAnswer() == btnTrueBool) {
                     points++;
-                    //butTrue.setBackgroundColor(Color.GREEN);
+                    infoCorrect.show();
                 }
+                else infoIncorrect.show();
                 summary();
                 break;
 
@@ -105,34 +127,50 @@ public class MainActivity extends AppCompatActivity {
                 ansQuestCounter++;
                 butTrue.setEnabled(false);
                 butFalse.setEnabled(false);
+                butCheat.setVisibility(View.GONE);
+                butShowAnswer.setVisibility(View.VISIBLE);
                 if(questions[counter].isAnswer() == btnFalseBool) {
                     points++;
-                    //butFalse.setBackgroundColor(Color.GREEN);
-                }
+                    infoCorrect.show();
+                }else infoIncorrect.show();
                 summary();
                 break;
         }
-
     }
 
-    public void summary() { // Wyświetlanie podsumowania
+    public void summary() {
         if(ansQuestCounter == questions.length){
+
             summaryView.setVisibility(View.VISIBLE);
-            summaryView.setText("Total points:" + points + "\n" + "Correct Answers: " + points +"\n" + "Incorrect Answers: " + (questions.length - points));
+            summaryView.setText("Total points:" + points + "\n" + "Correct Answers: " + points +"\n" + "Incorrect Answers: " + (questions.length - points) +"\n" + "Cheated Questions: " + CheatActivity.cheatCounter + "\n" + "Score: " + totalResult());
             butRestart.setVisibility(View.VISIBLE);
         }
+    }
+
+    public double totalResult(){
+        double fine = CheatActivity.cheatCounter * 15;
+        double pointsCalc = points;
+        if((pointsCalc/questions.length * 100 - fine) < 0 || fine > 100 ){
+            return 0;
+        }
+        else
+            return (pointsCalc/questions.length * 100 - fine);
     }
 
     public void restartQuiz(View view) {
         summaryView.setVisibility(View.GONE);
         butRestart.setVisibility(View.GONE);
+        textView.setText(questions[counter].getTextId());
         counter = 0;
         points = 0;
         ansQuestCounter = 0;
         answeredQuestions.clear();
         butTrue.setEnabled(true);
         butFalse.setEnabled(true);
-        textView.setText(questions[counter].getTextId());
+        butCheat.setVisibility(View.VISIBLE);
+        CheatActivity.cheatCounter = 0;
+        butShowAnswer.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -143,14 +181,28 @@ public class MainActivity extends AppCompatActivity {
         outState.putIntegerArrayList("ans_array_state", answeredQuestions);
         outState.putInt("points_state", points);
         outState.putInt("ans_counter", ansQuestCounter);
+
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         textView.setText(questions[counter].getTextId());
-        //textView.setVisibility(View.VISIBLE);
         checkIfAnswered();
         summary();
+    }
+
+    public void startCheatActivity(View view){
+        Intent intent = new Intent(this, CheatActivity.class);
+        intent.putExtra(ANS ,Boolean.toString(questions[counter].isAnswer()));
+        startActivity(intent);
+    }
+
+    public void showCorrectAnswer(View view) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Correct Answer is");
+        alertDialog.setMessage(Boolean.toString(questions[counter].isAnswer()));
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "EXIT", (dialog, which) -> dialog.dismiss());
+        alertDialog.show();
     }
 }
