@@ -16,6 +16,7 @@ import android.widget.Toolbar;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     Boolean btnTrueBool, btnFalseBool;
     ArrayList<Integer> answeredQuestions = new ArrayList<>(questions.length);
     Snackbar infoCorrect, infoIncorrect;
+    DecimalFormat df = new DecimalFormat("#.##");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         if(ansQuestCounter == questions.length){
 
             summaryView.setVisibility(View.VISIBLE);
-            summaryView.setText("Total points:" + points + "\n" + "Correct Answers: " + points +"\n" + "Incorrect Answers: " + (questions.length - points) +"\n" + "Cheated Questions: " + CheatActivity.cheatCounter + "\n" + "Score: " + totalResult());
+            summaryView.setText("Total points:" + points + "\n" + "Correct Answers: " + points +"\n" + "Incorrect Answers: " + (questions.length - points) +"\n" + "Cheated Questions: " + CheatActivity.cheatCounter + "\n" + "Score: " + df.format(totalResult()));
             butRestart.setVisibility(View.VISIBLE);
         }
     }
