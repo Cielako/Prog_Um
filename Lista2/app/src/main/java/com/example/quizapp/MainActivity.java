@@ -6,10 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 
 import com.google.android.material.snackbar.Snackbar;
@@ -43,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         butCheat = (Button)findViewById(R.id.butCheat);
         butShowAnswer = (Button)findViewById(R.id.butShowAnswer);
         butShowAnswer.setVisibility(View.GONE);
-
 
 
         btnTrueBool=Boolean.parseBoolean(butTrue.getText().toString());
@@ -204,5 +205,10 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.setMessage(Boolean.toString(questions[counter].isAnswer()));
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "EXIT", (dialog, which) -> dialog.dismiss());
         alertDialog.show();
+    }
+
+    public void SearchAnswer(View view) {
+        String searchTerm = textView.getText().toString();
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/search?q=" + searchTerm)));
     }
 }
