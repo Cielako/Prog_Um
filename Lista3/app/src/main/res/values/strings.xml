@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">StudentCrimeApp</string>
+    <string name="crimeTextHeader"><u>Crime Title</u></string>
+    <string name="crimeTextDetail"><u>Crime Detail</u></string>
+    <string name="crimeCheckBoxText">Solved</string>
+    <string name="crimeButtonDelete">Delete</string>
+
+
 </resources>

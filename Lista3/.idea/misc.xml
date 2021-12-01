@@ -3,8 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Studia/Semestr 5/Prog_Um/StudentCrimeApp/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
-        <entry key="..\:/Studia/Semestr 5/Prog_Um/StudentCrimeApp/app/src/main/res/layout/crime_list_item.xml" value="0.2957427536231884" />
+        <entry key="..\:/Studia/Semestr 5/Prog_Um/Lista3/app/src/main/res/layout/activity_crime.xml" value="0.2848731884057971" />
+        <entry key="..\:/Studia/Semestr 5/Prog_Um/Lista3/app/src/main/res/layout/activity_new_crime.xml" value="0.2848731884057971" />
+        <entry key="..\:/Studia/Semestr 5/Prog_Um/Lista3/app/src/main/res/menu/list_of_crimes_menu.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>

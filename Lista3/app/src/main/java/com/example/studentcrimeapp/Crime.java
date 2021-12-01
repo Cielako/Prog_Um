@@ -18,6 +18,10 @@ public class Crime {
         this.mTitle = mTitle;
     }
 
+    public void setDate(Date date){
+        mDate = date;
+    }
+
     public void setSolved(boolean mSolved) {
         this.mSolved = mSolved;
     }
@@ -25,4 +29,10 @@ public class Crime {
     public UUID getId() {
         return mId;
     }
+
+    public String getTitle() { return mTitle; }
+
+    public Date getDate() { return mDate; }
+
+    public boolean getSolved(){return  mSolved;}
 }

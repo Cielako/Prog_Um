@@ -3,12 +3,12 @@ package com.example.studentcrimeapp;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 public class CrimeLab {
-    private ArrayList<Crime> mCrimes;
-
+    private List<Crime> mCrimes;
     private static CrimeLab sCrimeLab;
 
     public static  CrimeLab get(Context context){
@@ -38,5 +38,28 @@ public class CrimeLab {
     }
     public List<Crime> getCrimes() {
         return mCrimes;
+    }
+
+    public void updateCrime(UUID id, String title, boolean solve, Date date){
+        for(Crime crime : mCrimes){
+            if(crime.getId().equals(id)){
+                crime.setTitle(title);
+                crime.setSolved(solve);
+                crime.setDate(date);
+            }
+        }
+    }
+
+    public void deleteCrime(UUID id){
+        for(Crime crime: mCrimes){
+            if(crime.getId().equals(id)){
+                mCrimes.remove(crime);
+                break;
+            }
+        }
+    }
+
+    public void newCrime(Crime crime){
+        mCrimes.add(crime);
     }
 }
